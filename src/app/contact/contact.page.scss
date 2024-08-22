@@ -1,0 +1,29 @@
+
+.main{
+    width: 90%;
+    margin: 1rem auto 0 auto;
+}
+.container{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 2fr;
+    
+    gap: 2rem;
+    // height: auto;
+}
+.content__img{
+    // width: 300px;
+    height: 500px;
+}
+
+@media (max-width: 600px) {
+    .content__img{
+        width: 70%;
+        margin: 0 auto;
+        height: 250px;
+    }
+    .container {
+        gap: 1rem;
+        grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+    }
+}

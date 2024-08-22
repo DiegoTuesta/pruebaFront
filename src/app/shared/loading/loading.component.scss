@@ -1,0 +1,27 @@
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(209, 209, 209, 1);
+    z-index: 1000;
+  }
+  
+  .loader-content {
+    text-align: center;
+  }
+  
+  .loader-content img {
+    max-width: 250px;
+    height: 300px;
+  }
+  
+  .loader-content p {
+    color: black;
+    font-size: 1.2em;
+    margin-top: 10px;
+  }
