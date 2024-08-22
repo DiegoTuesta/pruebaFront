@@ -1,8 +1,7 @@
 
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { timer, Subscription, filter } from 'rxjs';
+
 
 @Component({
   selector: 'app-loading',
@@ -20,19 +19,13 @@ export class LoadingComponent  implements OnInit, OnDestroy {
 
   currentImageIndex: number = 0;
   currentText: string = '';
-  private timerSubscription?: Subscription;
-  private navigationSubscription: Subscription | undefined;
+  private intervalId: any;
+  private timeoutId: any;
   constructor(private router: Router) {}
 
   ngOnInit() {
     if (this.images.length > 0 && this.texts.length > 0) {
       this.startImageRotation();
-
-      this.navigationSubscription = this.router.events.pipe(
-        filter(event => event.constructor.name === 'NavigationStart')
-      ).subscribe(() => {
-        this.stopImageRotation();
-      });
     }
   }
 
@@ -41,22 +34,28 @@ export class LoadingComponent  implements OnInit, OnDestroy {
   }
 
   private startImageRotation() {
-    this.timerSubscription = timer(0, this.displayDuration).subscribe(() => {
+    this.currentImageIndex = 0;
+    this.currentText = this.texts[this.currentImageIndex];
+
+    this.intervalId = setInterval(() => {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
       this.currentText = this.texts[this.currentImageIndex];
-    });
+    }, this.displayDuration);
 
-    setTimeout(() => {
+    this.timeoutId = setTimeout(() => {
       this.stopImageRotation();
       this.router.navigate([this.redirectPath]);
     }, this.timeLoading); 
   }
 
   private stopImageRotation() {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-      this.navigationSubscription?.unsubscribe();
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
     }
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
+   
   }
 
  

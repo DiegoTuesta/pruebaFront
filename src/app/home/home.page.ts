@@ -1,5 +1,5 @@
-import { Component} from '@angular/core';
-import {  RouterLink } from '@angular/router';
+import { Component, OnDestroy, OnInit} from '@angular/core';
+import {  NavigationEnd, Router, RouterLink } from '@angular/router';
 import {
   IonHeader,
   IonToolbar,
@@ -34,11 +34,25 @@ import { LoadingComponent } from '../shared/loading/loading.component';
     IonCardSubtitle,
   ],
 })
-export class HomePage {
+export class HomePage implements OnInit, OnDestroy {
   isLoaderVisible: boolean = false;
   loaderImages: string[] = ['assets/charizar.png', 'assets/picachu.png'];
   loaderTexts: string[] = ['Loading...', 'Please wait...'];
   redirectPath: string = '/contact';
+
+  constructor(private router: Router){}
+
+  ngOnInit(): void {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isLoaderVisible = false;
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.isLoaderVisible = false;
+  }
 
   showLoader() {
     this.isLoaderVisible = true;
